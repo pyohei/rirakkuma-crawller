@@ -7,15 +7,17 @@ crawl 4kuma comic
 """
 
 URL = "http://www.shufu.co.jp/contents/4kuma/"
-TEST_MODE = True
+TEST_MODE = False
 FILE_DIR = "./save"
 LOG_FILE = "rirakkuma.log"
+DETAIL_PATH = 'detail/detail.txt'
 
 import os
 import re
 import urllib2
 from datetime import datetime
 from HTMLParser import HTMLParser
+
 
 def main():
     if not os.path.exists(FILE_DIR):
@@ -32,9 +34,10 @@ def main():
     rh.feed(p)
     img_path = rh.get_img()
     img_file = img_path.split("/")[1]
+    img_name = img_file.split('.')[0]
     save_path = os.path.join(FILE_DIR, img_file)
     if os.path.exists(save_path):
-        log("Already img file in save dir", img_file)
+        __log("Already img file in save dir", img_file)
         return
     url = URL + img_path
     req = urllib2.Request(url)
@@ -43,14 +46,32 @@ def main():
     f = open(save_path, "w")
     f.write(page)
     f.close()
-    log("Fetch new image", img_file)
+    __log("Fetch new image", img_file)
+    __save_detail(img_name)
     return
 
-def log(msg, append=""):
+
+def __log(msg, append=""):
+    """ Logging."""
     now = datetime.now().strftime("%Y%m%d%H%M%S")
     f = open(LOG_FILE, "a")
     f.write("[%s] %s: %s\n" % (now, msg, append))
     f.close()
+
+
+def __save_detail(image_name):
+    """ Save file details to file.
+
+    >>> __save_detail('200')
+    """
+    dir_name = os.path.dirname(DETAIL_PATH)
+    if not os.path.exists(dir_name):
+        os.makedirs(dir_name)
+    with open(DETAIL_PATH, 'a') as f:
+        now = datetime.now().strftime('%Y%m%d%H%M%S')
+        line = '{name}, {time}\n'.format(name=image_name, time=now)
+        f.write(line)
+
 
 class RilakkumaHTML(HTMLParser):
 
@@ -70,4 +91,6 @@ class RilakkumaHTML(HTMLParser):
         return self.imgs
 
 if __name__ == "__main__":
-    main()
+    # main()
+    import doctest
+    doctest.testmod()
