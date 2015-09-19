@@ -11,6 +11,7 @@ TEST_MODE = False
 FILE_DIR = "./save"
 LOG_FILE = "rirakkuma.log"
 DETAIL_PATH = 'detail/detail.txt'
+NOTIFICATION = True
 
 import os
 import re
@@ -49,7 +50,8 @@ def main():
     f.close()
     __log("Fetch new image", img_file)
     __save_detail(img_name)
-    tweet.main()
+    if NOTIFICATION:
+        tweet.main()
     return
 
 
