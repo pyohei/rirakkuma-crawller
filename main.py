@@ -17,6 +17,7 @@ import re
 import urllib2
 from datetime import datetime
 from HTMLParser import HTMLParser
+import tweet
 
 
 def main():
@@ -48,6 +49,7 @@ def main():
     f.close()
     __log("Fetch new image", img_file)
     __save_detail(img_name)
+    tweet.main()
     return
 
 
