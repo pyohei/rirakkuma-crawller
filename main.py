@@ -36,7 +36,6 @@ def main():
     rh.feed(p)
     img_path = rh.get_img()
     img_file = img_path.split("/")[1]
-    img_name = img_file.split('.')[0]
     save_path = os.path.join(FILE_DIR, img_file)
     if os.path.exists(save_path):
         __log("Already img file in save dir", img_file)
@@ -49,7 +48,7 @@ def main():
     f.write(page)
     f.close()
     __log("Fetch new image", img_file)
-    __save_detail(img_name)
+    __save_detail(img_file)
     if NOTIFICATION:
         tweet.main()
     return
