@@ -36,8 +36,9 @@ def main():
     rh.feed(p)
     img_path = rh.get_img()
     img_file = img_path.split("/")[1]
-    save_path = os.path.join(FILE_DIR, img_file)
-    if os.path.exists(save_path):
+    filename = datetime.now().strftime("%Y%m%d.gif")
+    save_path = os.path.join(FILE_DIR, filename)
+    if __has_image(img_file):
         __log("Already img file in save dir", img_file)
         return
     url = URL + img_path
@@ -52,6 +53,19 @@ def main():
     if NOTIFICATION:
         tweet.main()
     return
+
+
+def __has_image(img_file):
+    dir_name = os.path.dirname(DETAIL_PATH)
+    file_path = os.path.join(dir_name, DETAIL_PATH)
+    if not os.path.exists(file_path):
+        return False
+    with open(DETAIL_PATH, 'r') as f:
+        images = f.readlines()
+    for image in images:
+        if img_file == image:
+            return True
+    return False
 
 
 def __log(msg, append=""):
