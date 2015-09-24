@@ -56,14 +56,12 @@ def main():
 
 
 def __has_image(img_file):
-    dir_name = os.path.dirname(DETAIL_PATH)
-    file_path = os.path.join(dir_name, DETAIL_PATH)
-    if not os.path.exists(file_path):
+    if not os.path.exists(DETAIL_PATH):
         return False
     with open(DETAIL_PATH, 'r') as f:
         images = f.readlines()
     for image in images:
-        if img_file == image:
+        if img_file == image.replace('\n', ''):
             return True
     return False
 
@@ -79,14 +77,13 @@ def __log(msg, append=""):
 def __save_detail(image_name):
     """ Save file details to file.
 
-    >>> __save_detail('200')
+    >>> __save_detail('test')
     """
     dir_name = os.path.dirname(DETAIL_PATH)
     if not os.path.exists(dir_name):
         os.makedirs(dir_name)
     with open(DETAIL_PATH, 'a') as f:
-        now = datetime.now().strftime('%Y%m%d%H%M%S')
-        line = '{name}, {time}\n'.format(name=image_name, time=now)
+        line = '{name}\n'.format(name=image_name)
         f.write(line)
 
 
@@ -108,6 +105,6 @@ class RilakkumaHTML(HTMLParser):
         return self.imgs
 
 if __name__ == "__main__":
-    # main()
-    import doctest
-    doctest.testmod()
+    main()
+    # import doctest
+    # doctest.testmod()
