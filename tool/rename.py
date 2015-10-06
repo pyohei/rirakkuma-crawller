@@ -11,6 +11,7 @@ import time
 import re
 
 FILE_DIR = 'save'
+BACKUP_DIR = 'rename_bk'
 RENAME_PAT = '201[0-9][0-1][0-9][0-3][0-9].gif$'
 
 
@@ -30,12 +31,16 @@ def main():
             day=str(update_time.tm_mday).zfill(2))
         refile_path = os.path.join(FILE_DIR, file_name)
         if os.path.exists(refile_path):
+            print 'Exist same file name[{0}].'.format(file_path)
             continue
-            # raise OSError('Exist same file name[{0}].'.format(file_path))
         print file_path
+
 # have change?
 # Having dir?
 # Rename (and backup?)
+
+# How to write.
+# os.rename()
 
 if __name__ == '__main__':
     main()
