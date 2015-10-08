@@ -16,12 +16,14 @@ RENAME_PAT = '201[0-9][0-1][0-9][0-3][0-9].gif$'
 
 
 def main():
+    """ main module."""
     files = os.listdir(FILE_DIR)
     for f in files:
         file_path = os.path.join(FILE_DIR, f)
         org_file_name = os.path.basename(file_path)
         if re.match(RENAME_PAT, org_file_name):
             print 'Already changed file[{0}]'.format(org_file_name)
+            continue
         f_stat = os.stat(file_path)
         update_epoc = f_stat.st_mtime
         update_time = time.gmtime(update_epoc)
