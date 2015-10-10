@@ -9,6 +9,8 @@ Rename file to update time.
 import os
 import time
 import re
+import shutil
+import logging
 
 FILE_DIR = 'save'
 BACKUP_DIR = 'rename_bk'
@@ -16,17 +18,20 @@ RENAME_PAT = '201[0-9][0-1][0-9][0-3][0-9].gif$'
 
 # Use logging
 
+
 def main():
     """ main module."""
+    logging.basicConfig(format='[%(levelname)s] %(message)s',
+                        level=logging.DEBUG)
     files = os.listdir(FILE_DIR)
     # Make backup dir
     # Separate to module
     for f in files:
-        # Confirm as target file.
+        set_backup()
         file_path = os.path.join(FILE_DIR, f)
         org_file_name = os.path.basename(file_path)
         if re.match(RENAME_PAT, org_file_name):
-            print 'Already changed file[{0}]'.format(org_file_name)
+            logging.info('Already changed file[{0}]'.format(org_file_name))
             continue
         # Get file name
         f_stat = os.stat(file_path)
@@ -39,12 +44,21 @@ def main():
         refile_path = os.path.join(FILE_DIR, file_name)
         # Check file name
         if os.path.exists(refile_path):
-            print 'Exist same file name[{0}].'.format(file_path)
+            logging.info('Exist same file name[{0}].'.format(file_path))
             continue
-        print file_path
-        # Backup
-        # Rename 
-            # os.rename()
+        org_file_path = os.path.join(FILE_DIR, org_file_name)
+        backup_file_path = os.path.join(BACKUP_DIR, org_file_name)
+        shutil.copy(org_file_path, backup_file_path)
+        shutil.copymode(org_file_path, backup_file_path)
+        shutil.copystat(org_file_path, backup_file_path)
+        new_file_path = os.path.join(FILE_DIR, file_name)
+        os.rename(org_file_path, new_file_path)
+
+
+def set_backup():
+    """Set up backup directory."""
+    if not os.path.exists(BACKUP_DIR):
+        os.mkdir(BACKUP_DIR)
 
 if __name__ == '__main__':
     main()
