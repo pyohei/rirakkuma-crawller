@@ -13,21 +13,18 @@ import shutil
 import logging
 
 FILE_DIR = 'save'
-BACKUP_DIR = 'rename_bk'
+BACKUP_DIR = 'backup_images'
 RENAME_PAT = '201[0-9][0-1][0-9][0-3][0-9].gif$'
-
-# Use logging
 
 
 def main():
-    """ main module."""
+    """main module."""
     logging.basicConfig(format='[%(levelname)s] %(message)s',
                         level=logging.DEBUG)
     files = os.listdir(FILE_DIR)
-    # Make backup dir
-    # Separate to module
+    if not os.path.exists(BACKUP_DIR):
+        os.mkdir(BACKUP_DIR)
     for f in files:
-        set_backup()
         file_path = os.path.join(FILE_DIR, f)
         org_file_name = os.path.basename(file_path)
         if re.match(RENAME_PAT, org_file_name):
@@ -54,11 +51,6 @@ def main():
         new_file_path = os.path.join(FILE_DIR, file_name)
         os.rename(org_file_path, new_file_path)
 
-
-def set_backup():
-    """Set up backup directory."""
-    if not os.path.exists(BACKUP_DIR):
-        os.mkdir(BACKUP_DIR)
 
 if __name__ == '__main__':
     main()
