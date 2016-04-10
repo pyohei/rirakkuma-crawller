@@ -9,4 +9,4 @@ install:
 
 script:
     - 'python test_main.py -v'
-    - 'python tweet_main.py -v'
+    - 'python test_tweet.py -v'
