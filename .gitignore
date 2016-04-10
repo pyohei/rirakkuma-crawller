@@ -3,3 +3,6 @@
 save/*
 detail/*
 *.rel
+*un~
+*~
+*.sw*
