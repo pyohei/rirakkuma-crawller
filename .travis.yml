@@ -1,0 +1,10 @@
+language: python
+sudo: false
+
+python:
+    - '2.6'
+    - '2.7'
+
+script:
+    - 'python test_main.py -v'
+    - 'python tweet_main.py -v'
